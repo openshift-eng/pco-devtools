@@ -144,9 +144,9 @@ function macos_install() {
   fi
 
   if [[ "${#packages_to_install[@]}" -gt 0 ]]; then
-    # set -o xtrace
+    set -o xtrace
     brew install --overwrite "${packages_to_install[@]}"
-    # set +o xtrace
+    set +o xtrace
   fi
 
   brew services start redis
