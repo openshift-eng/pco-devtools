@@ -111,6 +111,7 @@ function macos_install() {
     git                       # Replace the stock Git provided by Xcode
     jq
     node
+    pipx
     "postgresql@15"
     redis
     shellcheck                # Shell script linter
