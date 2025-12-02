@@ -53,7 +53,6 @@ function fedora_linux_install() {
     vim-enhanced
     xmlsec1-openssl           # Needed to compile specific Python versions
     xz-devel                  # Needed to compile specific Python versions
-    yarnpkg                   # Used for Atlas development
     zlib-devel                # Needed to compile specific Python versions
   )
   declare -a packages_to_install=()
