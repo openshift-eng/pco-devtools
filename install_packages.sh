@@ -38,7 +38,7 @@ function fedora_linux_install() {
     podman
     postgresql-server         # Used for Atlas development
     readline-devel            # Needed to compile specific Python versions
-    redis                     # Used for Atlas development
+    valkey                    # Used for Atlas development
     sed
     ShellCheck                # Shell script linter
     sqlite-devel              # Needed to compile specific Python versions
@@ -84,10 +84,10 @@ function fedora_linux_install() {
     set +o xtrace
   fi
 
-  # Enable the Redis service
-  if ! sudo systemctl is-enabled --quiet redis.service ; then
+  # Enable the Valkey service
+  if ! sudo systemctl is-enabled --quiet valkey.service ; then
     set -o xtrace
-    sudo systemctl enable --now redis.service
+    sudo systemctl enable --now valkey.service
     set +o xtrace
   fi
 }
@@ -112,7 +112,7 @@ function macos_install() {
     node
     pipx
     "postgresql@17"
-    redis
+    valkey
     shellcheck                # Shell script linter
     tmux                      # Shell window management
     vagrant                   # Used to stand up local VMs for development
@@ -149,7 +149,7 @@ function macos_install() {
     set +o xtrace
   fi
 
-  brew services start redis
+  brew services start valkey
   brew services start "postgresql@17"
 
   # This is a workaround for a problem with the 1.3.7 version of xmlsec1. It forces a downgrade to 1.2.7.
