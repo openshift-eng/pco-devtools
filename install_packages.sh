@@ -184,6 +184,18 @@ unset rc
 EOF
   fi
 
+  if [[ ! -f ~/.bash_profile ]]; then
+    # Install skeleton .bashrc if one is not present
+    cat >> ~/.bashrc <<"EOF"
+if [ -n "$BASH_VERSION" ]; then
+    # include .bashrc if it exists
+    if [ -f "$HOME/.bashrc" ]; then
+        . "$HOME/.bashrc"
+    fi
+fi
+EOF
+  fi
+
   # Stop the annoying zsh default shell warning
   if [[ ! -f ~/.bash_profile ]] || ! grep -E BASH_SILENCE_DEPRECATION_WARNING ~/.bash_profile >/dev/null 2>&1 ; then
     echo "export BASH_SILENCE_DEPRECATION_WARNING=1" >> ~/.bash_profile
