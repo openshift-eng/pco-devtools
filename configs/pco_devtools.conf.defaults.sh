@@ -5,8 +5,22 @@ export PCO_VENV_DIR="${PCO_BASE_DIR}/venvs"
 
 if [[ "$(uname)" == "Linux" ]]; then
   # Linux-specific customizations
-  export REQUESTS_CA_BUNDLE="${REQUESTS_CA_BUNDLE:-/etc/pki/tls/certs/ca-bundle.crt}"
-
+  if [[ -z "${VIRTUAL_ENV}" ]] ; then
+    # try to get out of the virtual env
+    deactivate || source deactivate || :
+  fi
+  if [[ "${PATH}" =~ "pyenv" ]] ; then
+    # try to switch to the system-managed python version when `pyenv` is installed; fail silently if `pyenv` isn't
+    # installed.
+    pyenv shell system || :
+  fi
+  # Extract the system python's default CA bundle path to set REQUESTS_CA_BUNDLE; this way, virtualenvs will pick up
+  # the correct location.
+  REQUESTS_CA_BUNDLE="$(python -c 'from requests.utils import DEFAULT_CA_BUNDLE_PATH; print(DEFAULT_CA_BUNDLE_PATH)')"
+  # Make sure the extracted bundle path is under `/etc`
+  if [[ "${REQUESTS_CA_BUNDLE}" =~ ^/etc ]]
+    export REQUESTS_CA_BUNDLE
+  fi
 elif [[ "$(uname)" == "Darwin" ]]; then
   # MacOS-specific customizations
   # Allows the installed GNU findutils (gfind, gxargs, glocate) to be used with their regular names (find, xargs, ...)
